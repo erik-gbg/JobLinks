@@ -14,13 +14,13 @@ This is just a small change to the original file,
 according to the given assignment. Now it shows the
 links to the ads.
 
-###joblinks.py
+### joblinks.py
 Given a search query this module reads all ads (in successive 
 batches of 100). A catalogue is created, grouped by sites, containing 
 a selection of the data attributes. The catalogue can be saved as a JSON file
 or used directly by the joblinks_browswer.
 
-###joblinks_browswer.py
+### joblinks_browswer.py
 A very simple GUI for browsing a joblinks catalogue. Implemented with PySimpleGUI.
 
 ## Installation
@@ -39,7 +39,7 @@ There are two ways:
 ### test_joblinks_example.py
 Is stand-alone. Just make sure the API URL is set and run.
 
-###joblinks.py
+### joblinks.py
 Serves as the data handling module for the joblinks_browser.
 If run alone (as main) it will write the data in two JSON files. 
 The query string is given as a command line argument ("Python" is used as default).
@@ -57,6 +57,6 @@ The joblinks_browser can use these files, thus we can avoid asking the API every
 Or browse them with a JSON viewer. The reason for the second file is that multi hits
 are of special interest for this exercise.
 
-###joblinks_browswer.py
+### joblinks_browswer.py
 
 Hopefully self-explanatory.
