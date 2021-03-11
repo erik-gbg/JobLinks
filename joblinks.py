@@ -1,5 +1,6 @@
-import requests
+import sys
 import json
+import requests
 
 """
 Joblinks
@@ -116,6 +117,7 @@ if __name__ == '__main__':
         query = sys.argv[1]
     except:
         query = 'Python'  # default
+    print(f"Query = {query}")
 
     all_hits = get_hits_all(query)
 
