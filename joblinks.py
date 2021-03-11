@@ -112,7 +112,11 @@ def get_ads_catalogue_only_multihits(query):
 
 
 if __name__ == '__main__':
-    query = 'Python'  # parametrize?
+    try:
+        query = sys.argv[1]
+    except:
+        query = 'Python'  # default
+
     all_hits = get_hits_all(query)
 
     ads_catalogue = build_ads_catalogue(all_hits)

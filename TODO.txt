@@ -1,0 +1,8 @@
+joblinks module:
+- make it object oriented
+
+joblinks_browser:
+- URLs should be hyperlinks!
+- offer filtering on municipality/region
+- PySimpleGUI is too limited, should be something web based (this was just a toy version)
+
