@@ -83,11 +83,8 @@ def build_ads_catalogue(hits):
             try:
                 ad_dict['municipality'] = hit['workplace_addresses'][0]['municipality']
             except:
-                ad_dict['municipality'] = ''
-            try:
-                ad_dict['region'] = hit['workplace_addresses'][0]['region']
-            except:
-                ad_dict['region'] = ''
+                ad_dict['municipality'] = '-'
+                print(ad_dict)
             other_urls = []
             for j in range(len(hit['source_links'])):
                 if j != i:
