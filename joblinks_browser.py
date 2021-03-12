@@ -14,7 +14,7 @@ Installation:
 def query_dialog_popup():
     layout = [[sg.Text('Query'), sg.InputText(default_text='Python', key='-INPUT-')],
               [sg.Checkbox('Prefer loading from saved JSON file', default=True, key='-CHECK1-')],
-              [sg.Checkbox('Only show ads with multiple links', default=True, key='-CHECK2-')],
+              [sg.Checkbox('Only show ads with multiple links', default=False, key='-CHECK2-')],
               [sg.OK()]]
     window = sg.Window('Make query', layout)
     while True:
