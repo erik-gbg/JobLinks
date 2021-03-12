@@ -3,6 +3,6 @@ joblinks module:
 
 joblinks_browser:
 - URLs should be hyperlinks!
-- offer filtering on municipality/region
+- handle ads with many addresses
 - PySimpleGUI is too limited, should be something web based (this was just a toy version)
 
