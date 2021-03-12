@@ -52,21 +52,19 @@ def filter_by_municipality(cat, municip):
     for site in cat:
         filtered_cat[site] = []
         for ad_dict in cat[site]:
-            if ad_dict['municipality'] == municip:
+            if municip in ad_dict['municipality']:
                 filtered_cat[site].append(ad_dict)
     return filtered_cat
 
 
 def build_catalogue_tree(treedata, cat, municip):
-    if municipality != '':
+    if municip != '':
         cat = filter_by_municipality(cat, municip)
     for site in cat:
         treedata.Insert('', site, site, values=[len(cat[site])])
         for ad_dict in cat[site]:
-            if municipality != '' and ad_dict['municipality'] != municip:
-                continue
-            ad_title = ad_dict['headline'] + "\n" + ad_dict['employer']
-            treedata.Insert(site, ad_dict['url'], ad_title,  values=[ad_dict['municipality']])
+            this_municip = ad_dict['municipality'][0] if municip == '' else municip
+            treedata.Insert(site, ad_dict['url'], ad_dict['headline'],  values=[this_municip])
             treedata.Insert(ad_dict['url'], ad_dict['url'] + '-thisurl', ad_dict['url'], values=[ad_dict['employer']])
             for i in range(len(ad_dict['other_urls'])):
                 treedata.Insert(ad_dict['url'], ad_dict['url'] + f'-child{i}', ad_dict['other_urls'][i], values=[])

@@ -60,11 +60,12 @@ def get_hits_all(query):
 
 
 def list_of_sites(hits):
-    sites = []
+    sites = set()
     for hit in hits:
+        source_links = hit.get('source_links', [])
         for i in range(len(hit['source_links'])):
-            sites.append(hit['source_links'][i]['label'])
-    return sorted(set(sites))
+            sites.add(source_links[i].get('label', '-'))
+    return sorted(sites)
 
 
 # catalogue grouped by sites
@@ -73,23 +74,27 @@ def build_ads_catalogue(hits):
     for site in list_of_sites(hits):
         catalogue[site] = []
     for hit in hits:
-        for i in range(len(hit['source_links'])):
-            site = hit['source_links'][i]['label']
+        source_links = hit.get('source_links', [])
+        for i in range(len(source_links)):
+            site = source_links[i].get('label', '-')
             ad_dict = {}
-            ad_dict['headline'] = hit['headline']
-            ad_dict['employer'] = hit['employer']['name']
-            ad_dict['url'] = hit['source_links'][i]['url']
-            # ad_dict['brief'] = hit['brief']
-            try:
-                ad_dict['municipality'] = hit['workplace_addresses'][0]['municipality']
-            except:
-                ad_dict['municipality'] = '-'
-                print(ad_dict)
-            other_urls = []
-            for j in range(len(hit['source_links'])):
+            ad_dict['headline'] = hit.get('headline', 'no headline given')
+            ad_dict['employer'] = hit.get('employer', {}).get('name', 'no employer name given')
+            ad_dict['url'] = source_links[i].get('url', '')
+
+            ad_dict['other_urls'] = []
+            for j in range(len(source_links)):
                 if j != i:
-                    other_urls.append(hit['source_links'][j]['url'])
-            ad_dict['other_urls'] = other_urls
+                    ad_dict['other_urls'].append(source_links[j].get('url', ''))
+
+            addresses = hit.get('workplace_addresses', [])
+            if not addresses:
+                ad_dict['municipality'] = ['-']
+            else:
+                ad_dict['municipality'] = []
+                for a in range(len(addresses)):
+                    ad_dict['municipality'].append(addresses[a].get('municipality', ''))
+
             catalogue[site].append(ad_dict)
     return catalogue
 
@@ -111,31 +116,28 @@ def get_ads_catalogue_only_multihits(query):
 
 
 if __name__ == '__main__':
-    try:
+    if len(sys.argv) >= 2:
         query = sys.argv[1]
         print(f'Query = "{query}"')
-    except:
+    else:
         query = 'Python'  # default
         print(f'Using default query = "{query}"')
 
     all_hits = get_hits_all(query)
 
-    try:
-        ads_catalogue = build_ads_catalogue(all_hits)
-        json_filename = query.lower() + " " + "catalogue.json";
-        f = open(json_filename, "w", encoding="utf-8")
-        json.dump(ads_catalogue, f)
-        print("File written:", os.path.realpath(f.name))
-        f.close()
+    ads_catalogue = build_ads_catalogue(all_hits)
+    json_filename = query.lower() + " " + "catalogue.json";
+    f = open(json_filename, "w", encoding="utf-8")
+    json.dump(ads_catalogue, f)
+    print("File written:", os.path.realpath(f.name))
+    f.close()
 
-        mh_catalogue = build_ads_catalogue(filter_only_multihits(all_hits))
-        json_filename = query.lower() + " " + "catalogue multihits.json";
-        f = open(json_filename, "w", encoding="utf-8")
-        json.dump(mh_catalogue, f)
-        print("File written:", os.path.realpath(f.name))
-        f.close()
-    except:
-        print("Error: Unable to write all output files")
+    mh_catalogue = build_ads_catalogue(filter_only_multihits(all_hits))
+    json_filename = query.lower() + " " + "catalogue multihits.json";
+    f = open(json_filename, "w", encoding="utf-8")
+    json.dump(mh_catalogue, f)
+    print("File written:", os.path.realpath(f.name))
+    f.close()
 
 
 
