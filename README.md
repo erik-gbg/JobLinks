@@ -17,7 +17,7 @@ links to the ads.
 ### joblinks.py
 Given a search query this module reads all ads (in successive 
 batches of 100). A catalogue is created, grouped by sites, containing 
-a selection of the data attributes. The catalogue can be saved as a JSON file
+a subset of the data attributes. The catalogue can be saved as a JSON file
 or used directly by the joblinks_browswer.
 
 ### joblinks_browswer.py
@@ -37,12 +37,13 @@ There are two ways:
 ## Running
 
 ### test_joblinks_example.py
-Is stand-alone. Just make sure the API URL is set and run.
+Is stand-alone. Just make sure the API URL is set, and run.
 
 ### joblinks.py
 Serves as the data handling module for the joblinks_browser.
 If run alone (as main) it will write the data in two JSON files. 
-The query string is given as a command line argument ("Python" is used as default).
+The query string is given as a command line argument ("Python" 
+is used as default query).
 Also here the API URL needs to be set before running.
 
 Example:
@@ -54,9 +55,9 @@ Will create two files:
 2. `java catalogue multihits.json` only ads with multiple links
 
 The joblinks_browser can use these files, thus we can avoid asking the API every time.
-Or browse them with a JSON viewer. The reason for the second file is that multi hits
+Or you may browse them with a JSON viewer. The reason for the second file is that "multi hits"
 are of special interest for this exercise.
 
 ### joblinks_browswer.py
 
-Hopefully self-explanatory.
+Should be self-explanatory.
