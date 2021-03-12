@@ -1,4 +1,5 @@
 import sys
+import os
 import json
 import requests
 
@@ -52,7 +53,7 @@ def get_hits_batch(query, limit, offset):
 def get_hits_all(query):
     num_hits = number_of_hits(query)
     all_hits = []
-    for offset in range(0, num_hits, 100):
+    for offset in range(0, num_hits, limit):
         hits = get_hits_batch(query, limit, offset)
         all_hits.extend(hits)
     return all_hits
@@ -115,22 +116,29 @@ def get_ads_catalogue_only_multihits(query):
 if __name__ == '__main__':
     try:
         query = sys.argv[1]
+        print(f'Query = "{query}"')
     except:
         query = 'Python'  # default
-    print(f"Query = {query}")
+        print(f'Using default query = "{query}"')
 
     all_hits = get_hits_all(query)
 
-    ads_catalogue = build_ads_catalogue(all_hits)
-    json_filename = query.lower() + " " + "catalogue.json";
-    f = open(json_filename, "w", encoding="utf-8")
-    json.dump(ads_catalogue, f)
-    f.close()
+    try:
+        ads_catalogue = build_ads_catalogue(all_hits)
+        json_filename = query.lower() + " " + "catalogue.json";
+        f = open(json_filename, "w", encoding="utf-8")
+        json.dump(ads_catalogue, f)
+        print("File written:", os.path.realpath(f.name))
+        f.close()
 
-    mh_catalogue = build_ads_catalogue(filter_only_multihits(all_hits))
-    json_filename = query.lower() + " " + "catalogue multihits.json";
-    f = open(json_filename, "w", encoding="utf-8")
-    json.dump(mh_catalogue, f)
-    f.close()
+        mh_catalogue = build_ads_catalogue(filter_only_multihits(all_hits))
+        json_filename = query.lower() + " " + "catalogue multihits.json";
+        f = open(json_filename, "w", encoding="utf-8")
+        json.dump(mh_catalogue, f)
+        print("File written:", os.path.realpath(f.name))
+        f.close()
+    except:
+        print("Error: Unable to write all output files")
+
 
 
